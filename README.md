@@ -10,15 +10,15 @@ FastAPI gateway for Ollama/vLLM inference. Unifies API, allows engine/model sele
 4.  **Install Dependencies**: `uv sync`
 5.  **Configure `.env`**: Create `.env` in `src` (e.g., `OLLAMA_BASE_URL="http://localhost:11434/api"`, `VLLM_API_URL="http://localhost:8000/generate"`, etc.).
 6.  **Run Services**: Start Ollama/vLLM.
-    * **Ollama**: `ollama serve` (or it runs automatically) and `ollama pull tinyllama`
-    * **vLLM**: `uv run python -m vllm.entrypoints.api_server --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --host 0.0.0.0 --port 8000`
+    - **Ollama**: `ollama serve` (or it runs automatically) and `ollama pull tinyllama`
+    - **vLLM**: `uv run python -m vllm.entrypoints.api_server --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --host 0.0.0.0 --port 8000`
 7.  **Run Gateway**: `uv run uvicorn src.main:app --host 0.0.0.0 --port 8001 --reload`
 
 ## API Endpoint
 
-* `POST /api/v1/llm/generate`
-    * **Request**: `{"prompt": "...", "engine": "ollama" | "vllm", "max_tokens": 150, "temperature": 0.7, "model": "..."}`
-    * **Response**: `{"generated_text": "...", "model_used": "...", "engine_used": "..."}`
+- `POST /api/v1/llm/generate`
+  - **Request**: `{"prompt": "...", "engine": "ollama" | "vllm", "max_tokens": 150, "temperature": 0.7, "model": "..."}`
+  - **Response**: `{"generated_text": "...", "model_used": "...", "engine_used": "..."}`
 
 ### Example `curl` Commands
 
@@ -37,20 +37,20 @@ curl -X POST "http://localhost:8001/api/v1/llm/generate" \
            "model": "tinyllama"
          }'
 ```
+
 #### Using vLLM Engine
 
 ```bash
 curl -X POST "http://localhost:8001/api/v1/llm/generate" \
      -H "Content-Type: application/json" \
      -d '{
-           "prompt": "Buatlah daftar 5 manfaat belajar bahasa pemrograman baru.",
+           "prompt": "Hi there.",
            "max_tokens": 150,
            "temperature": 0.8,
            "engine": "vllm",
            "model": "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
          }'
 ```
-`TinyLlama/TinyLlama-1.1B-Chat-v1.0`: `uv run python -m vllm.entrypoints.api_server --model TinyLlama/TinyLlama-1.1B-Chat-v1.0 --host 0.0.0.0 --port 8000`)*
 
 ## Error Handling
 

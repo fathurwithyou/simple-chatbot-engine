@@ -32,7 +32,6 @@ async def generate_with_vllm(request: LLMRequest) -> str:
                                   original_detail=str(exc))
         except httpx.HTTPStatusError as exc:
             if exc.response.status_code == status.HTTP_404_NOT_FOUND:
-
                 raise ModelNotFoundError(
                     model_name=model_name, engine_name="vLLM")
             raise LLMServiceError(service_name="vLLM",

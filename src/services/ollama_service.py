@@ -4,6 +4,7 @@ from core.config import OLLAMA_BASE_URL, OLLAMA_DEFAULT_MODEL
 from api.v1.models import LLMRequest
 from core.exceptions import LLMServiceError, ModelNotFoundError
 from fastapi import status
+import json
 
 
 async def generate_with_ollama(request: LLMRequest) -> str:
@@ -26,8 +27,7 @@ async def generate_with_ollama(request: LLMRequest) -> str:
             full_response = ""
             for line in response.iter_lines():
                 if line:
-                    data = httpx.json.loads(line)
-
+                    data = json.loads(line)
                     if "error" in data and "model not found" in data["error"].lower():
                         raise ModelNotFoundError(
                             model_name=model_name, engine_name="Ollama")
